@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Dan's Sample Todo List App</title>
+	</head>
+	<!-- http://bootswatch.com/yeti/ -->
+	<link rel="stylesheet" href="./assets/css/bootstrap.yeti.css">
+	
+	<!-- http://getbootstrap.com/examples/jumbotron-narrow/ -->
+	<link rel="stylesheet" href="./assets/css/narrow.css">
+	
+	<!-- Bootstrap requires jQuery -->
+	<script src="./assets/js/jquery.min.js"></script>
+	<!-- Latest compiled and minified Bootstrap JS -->
+	<script src="./assets/js/bootstrap.min.js"></script>
+	<!-- RactiveJS -->
+	<script src="./assets/js/ractive.js"></script>
+	
+	<body>
+		<div class="container">
+			<div class="header clearfix">
+				<nav>
+					<ul class="nav nav-pills pull-right">
+						<li role="presentation"><a href="https://github.com/dsikes">@dsikes</a></li>
+						<li role="presentation"><a href="dansikes.pdf">PDF of Resume</a></li>
+					</ul>
+				</nav>
+				<h3 class="text-muted">Todo</h3>
+			</div>
+			<div id='todoInputFormGroup' class="form-group">
+				<label id='labelForTodoInput' class="control-label" for="todoInput"></label>
+				<input id='todoInput' type='text' class="form-control" placeholder='What needs to be done?' data-toggle="tooltip" data-placement="top" title="Press enter to save">
+			</div>
+			
+			<br/>
+			
+			<ul id='activeTaskArea' class="list-group">
+				
+			</ul>
+			
+			
+			</div> <!-- /container -->
+
+
+			<!-- RACTIVE JS INLINE TEMPLATE -->
+			<!-- THIS TEMPLATE IS BEING INJECTED DYNAMICALLY INTO activeTaskArea -->
+			<script id='task' type='text/ractive'>
+				{{#task}}
+
+				{{#if state == 'active'}}
+				<li class="list-group-item">
+					<span class="pull-right"><input type='checkbox' data-toggle="tooltip" data-placement="top" title="Mark as complete" onchange="updateState()"></span>
+					<span data-toggle="tooltip" data-placement="top" title="{{timeAdded}}" >{{task}}</span>
+				</li>
+				{{else}}
+
+				<li class="list-group-item" style="text-decoration:line-through;" >
+					<span class="pull-right">
+						
+						<!-- UNDO ICON -->
+						<img data-toggle="tooltip" data-placement="top" title="Undo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABfUlEQVQ4T5WT0VHDMBBEd6UviBnSAVABwikAUgF0AHTgVICpAKgg6QCoACjARnSQEmBihh+kYyTsYOIkDPrSnKTnvd0zsWSZyhgNPXZw5zaxdtmdpsbFw3SW5iQvQl0gExBTD2+xiSdL+7p4fw4wH2ZXO30LwKz6olByv+lv2qAfgJi+qtQdycN1kgFY13PDBtJtoUozCnMQ2wIZefFWUQVVGcGdGm6LpDgI+w4gFEM76lNNPH3WmGiCwnf1SHC/9mdUJuX1UsCqFgJEV3paq5uWSbn3L0AAD6rBBMBp2Dvt9hjlehULXvz9X7m3Y3bihjQzc6SpH2JfIpflVpmvS6EDqGXJorurIGmV2sbIIikYPRjMBncgjmt3z8ukDH12VlqlZwTH8UBwX2wVJxFQz/5z60VWJMVNm5CG+QCvmlow0G7Y6TyFX/RvP15Jxh9JRAzJfvNYIHOVv2KMEOF1yHmpB4I3oWTtFjtzEGN1KgNw1Jq6FwCPvufzxT/yC35Xs64WIG+BAAAAAElFTkSuQmCC"/>
+						
+						<!-- REMOVE ICON -->
+						<img data-toggle="tooltip" data-placement="top" title="Remove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABB0lEQVQ4T+2TMU4CQRSG/5+BRHQ3EhMKOvQCTqLQmWzQyspb2OoNuIGewd7EXiVbrxL2CFQ2RqPZBd2FnWdmCyS4EHud8pt/vnnz8oYoWPFhW4q4cx9wkf8ANmAFi+EiZrO5IPZaGoqDoluXMZWl21U/HOaC6Gjfo/BCGZz9RpKVcCmUc/fu0f+uoMQbe1ggw1USgs1838iJ4z+Esx5EnXbXcrcXdMXTNaAWI0kqSFNip5/gWbv0w7f53KwH+TPmBHGn1afhKZQcG6BMw2sQV04v2P0X/J0ejA72Guuvny9orFUxzYhIjcZbpr5xO3haOgcfnm5OVSUkuLlqlAXyXs4m2n4km/sCNEfsETt09iwAAAAASUVORK5CYII="/>
+					</span>
+					<span data-toggle="tooltip" data-placement="top" title="Mark as complete" >Cras justo odio</span>
+				</li>
+				{{/if}}
+
+				{{/task}}
+			</script>
+			<!-- END TEMPLATE -->
+
+			<!-- START VIEW MODEL -->
+			<script type="text/javascript">
+				//create a todo class to represent our todo entries
+				function todo(task){
+					var now = new Date().toLocaleString()
+					
+					this.task = task
+					this.state = "active"
+					this.timeAdded = "added on "+now
+				}
+
+				function setTooltip(){
+					$('[data-toggle="tooltip"]').tooltip()
+				}
+
+
+				function updateState(){
+					console.log($(this)[0]);
+				}
+
+
+				$(function () {
+					taskData = window.todoList = []; //create a new array to hold our todo entries
+					
+					var todoView = new Ractive({
+						el: '#activeTaskArea',
+						template: '#task',
+						magic: true,
+						data: {task:taskData}
+					});
+				})
+				//the user has pressed enter in the todoInput box.
+				$('#todoInput').keydown(function (e){
+					var todoInput = $("#todoInput");
+					if(e.keyCode == 13){
+						//check to see if the todoInput value is empty.
+						//console.log(todoInput.val());
+						if(todoInput.val() == ""){
+							//the user didn't add a todo item, so lets indicate that it is a required field
+							$("#todoInputFormGroup").addClass("has-error");
+							$("#labelForTodoInput").html("Yo! Add something to do before pressing enter!");
+						}else{
+							//we have data in the input field
+							entry = new todo(todoInput.val());
+							window.todoList.push(entry);
+							todoInput.val(""); //clear the text input field
+							setTooltip(); //initialize newly added content on the page...
+						}
+					}
+					//remove error code if it exist when they add text
+					if($("#todoInputFormGroup").hasClass("has-error") && todoInput.val() != ""){
+						$("#todoInputFormGroup").removeClass("has-error");
+						$("#labelForTodoInput").html("");
+					}
+					//whatever data is in the input field will be used along with a few other items to create a new entry in our todo list.
+					//we will store the todo object as an entry in our todo list array
+				})
+			</script>
+			<!-- END VIEW MODEL -->
+		</body>
+	</html>
