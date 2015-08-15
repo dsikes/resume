@@ -13,4 +13,3 @@ The tools that I am using to write this app:
     * 2 way data-binding
 * NodeJS (Express)
 * HTML5 LocalStorage
-coush
