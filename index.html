@@ -21,13 +21,14 @@
 			<div class="header clearfix">
 				<nav>
 					<ul class="nav nav-pills pull-right">
-						<li role="presentation"><a href="https://github.com/dsikes">@dsikes</a></li>
+						<li role="presentation"><a href="https://github.com/dsikes" target="_blank">@dsikes</a></li>
 						<li role="presentation"><a href="dansikes.pdf">PDF of Resume</a></li>
 					</ul>
 				</nav>
 				<h3 class="text-muted">Todo</h3>
-			</div>
-			<div id='todoInputFormGroup' class="form-group">
+				<br/>
+				<p style="color:grey;">This is just a demo of a full fledge MVVM application. The data is <b>not</b> persistent.</p>
+				<br/>
 				<label id='labelForTodoInput' class="control-label" for="todoInput"></label>
 				<input id='todoInput' type='text' class="form-control" placeholder='What needs to be done?' data-toggle="tooltip" data-placement="top" title="Press enter to save">
 			</div>
@@ -45,12 +46,11 @@
 			<!-- RACTIVE JS INLINE TEMPLATE -->
 			<!-- THIS TEMPLATE IS BEING INJECTED DYNAMICALLY INTO activeTaskArea -->
 			<script id='task' type='text/ractive'>
-				{{#task}}
-
+				{{#task:i}}
 				{{#if state == 'active'}}
 				<li class="list-group-item">
-					<span class="pull-right"><input type='checkbox' data-toggle="tooltip" data-placement="top" title="Mark as complete" onchange="updateState()"></span>
-					<span data-toggle="tooltip" data-placement="top" title="{{timeAdded}}" >{{task}}</span>
+					<span class="pull-right"><input class='checkbox' type='checkbox' data-toggle="tooltip" data-placement="top" title="Mark as complete" onclick="updateState({{i}},'complete')"></span>
+					<span class='task' data-toggle="tooltip" data-placement="top" title="{{timeAdded}}" >{{task}}</span>
 				</li>
 				{{else}}
 
@@ -58,12 +58,12 @@
 					<span class="pull-right">
 						
 						<!-- UNDO ICON -->
-						<img data-toggle="tooltip" data-placement="top" title="Undo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABfUlEQVQ4T5WT0VHDMBBEd6UviBnSAVABwikAUgF0AHTgVICpAKgg6QCoACjARnSQEmBihh+kYyTsYOIkDPrSnKTnvd0zsWSZyhgNPXZw5zaxdtmdpsbFw3SW5iQvQl0gExBTD2+xiSdL+7p4fw4wH2ZXO30LwKz6olByv+lv2qAfgJi+qtQdycN1kgFY13PDBtJtoUozCnMQ2wIZefFWUQVVGcGdGm6LpDgI+w4gFEM76lNNPH3WmGiCwnf1SHC/9mdUJuX1UsCqFgJEV3paq5uWSbn3L0AAD6rBBMBp2Dvt9hjlehULXvz9X7m3Y3bihjQzc6SpH2JfIpflVpmvS6EDqGXJorurIGmV2sbIIikYPRjMBncgjmt3z8ukDH12VlqlZwTH8UBwX2wVJxFQz/5z60VWJMVNm5CG+QCvmlow0G7Y6TyFX/RvP15Jxh9JRAzJfvNYIHOVv2KMEOF1yHmpB4I3oWTtFjtzEGN1KgNw1Jq6FwCPvufzxT/yC35Xs64WIG+BAAAAAElFTkSuQmCC"/>
+						<img onclick="updateState({{i}},'active')" data-toggle="tooltip" data-placement="top" title="Undo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABfUlEQVQ4T5WT0VHDMBBEd6UviBnSAVABwikAUgF0AHTgVICpAKgg6QCoACjARnSQEmBihh+kYyTsYOIkDPrSnKTnvd0zsWSZyhgNPXZw5zaxdtmdpsbFw3SW5iQvQl0gExBTD2+xiSdL+7p4fw4wH2ZXO30LwKz6olByv+lv2qAfgJi+qtQdycN1kgFY13PDBtJtoUozCnMQ2wIZefFWUQVVGcGdGm6LpDgI+w4gFEM76lNNPH3WmGiCwnf1SHC/9mdUJuX1UsCqFgJEV3paq5uWSbn3L0AAD6rBBMBp2Dvt9hjlehULXvz9X7m3Y3bihjQzc6SpH2JfIpflVpmvS6EDqGXJorurIGmV2sbIIikYPRjMBncgjmt3z8ukDH12VlqlZwTH8UBwX2wVJxFQz/5z60VWJMVNm5CG+QCvmlow0G7Y6TyFX/RvP15Jxh9JRAzJfvNYIHOVv2KMEOF1yHmpB4I3oWTtFjtzEGN1KgNw1Jq6FwCPvufzxT/yC35Xs64WIG+BAAAAAElFTkSuQmCC"/>
 						
 						<!-- REMOVE ICON -->
-						<img data-toggle="tooltip" data-placement="top" title="Remove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABB0lEQVQ4T+2TMU4CQRSG/5+BRHQ3EhMKOvQCTqLQmWzQyspb2OoNuIGewd7EXiVbrxL2CFQ2RqPZBd2FnWdmCyS4EHud8pt/vnnz8oYoWPFhW4q4cx9wkf8ANmAFi+EiZrO5IPZaGoqDoluXMZWl21U/HOaC6Gjfo/BCGZz9RpKVcCmUc/fu0f+uoMQbe1ggw1USgs1838iJ4z+Esx5EnXbXcrcXdMXTNaAWI0kqSFNip5/gWbv0w7f53KwH+TPmBHGn1afhKZQcG6BMw2sQV04v2P0X/J0ejA72Guuvny9orFUxzYhIjcZbpr5xO3haOgcfnm5OVSUkuLlqlAXyXs4m2n4km/sCNEfsETt09iwAAAAASUVORK5CYII="/>
+						<img onclick="removeEl({{i}})" data-toggle="tooltip" data-placement="top" title="Remove" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABB0lEQVQ4T+2TMU4CQRSG/5+BRHQ3EhMKOvQCTqLQmWzQyspb2OoNuIGewd7EXiVbrxL2CFQ2RqPZBd2FnWdmCyS4EHud8pt/vnnz8oYoWPFhW4q4cx9wkf8ANmAFi+EiZrO5IPZaGoqDoluXMZWl21U/HOaC6Gjfo/BCGZz9RpKVcCmUc/fu0f+uoMQbe1ggw1USgs1838iJ4z+Esx5EnXbXcrcXdMXTNaAWI0kqSFNip5/gWbv0w7f53KwH+TPmBHGn1afhKZQcG6BMw2sQV04v2P0X/J0ejA72Guuvny9orFUxzYhIjcZbpr5xO3haOgcfnm5OVSUkuLlqlAXyXs4m2n4km/sCNEfsETt09iwAAAAASUVORK5CYII="/>
 					</span>
-					<span data-toggle="tooltip" data-placement="top" title="Mark as complete" >Cras justo odio</span>
+					<span class='task' data-toggle="tooltip" data-placement="top" title="{{timeAdded}}" >{{task}}</span>
 				</li>
 				{{/if}}
 
@@ -77,9 +77,10 @@
 				function todo(task){
 					var now = new Date().toLocaleString()
 					
-					this.task = task
-					this.state = "active"
-					this.timeAdded = "added on "+now
+					this.task = task;
+					this.state = "active";
+					this.timeAdded = "added on "+now;
+					
 				}
 
 				function setTooltip(){
@@ -87,12 +88,17 @@
 				}
 
 
-				function updateState(){
-					console.log($(this)[0]);
+				function updateState(index,state){
+					window.todoList[index].state = state;
+					setTooltip(); //when we redraw the dom element, we have to tell the tooltip to reactivate.
 				}
 
+				function removeEl(index){
+					window.todoList.splice(index, 1);
+				}
 
 				$(function () {
+					Ractive.DEBUG = false; //WE DON'T WANT RACTIVE IN DEBUG MODE
 					taskData = window.todoList = []; //create a new array to hold our todo entries
 					
 					var todoView = new Ractive({
