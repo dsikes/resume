@@ -7,9 +7,8 @@ I chose to do a sample TODO list application from scratch, because it is sort of
 The tools that I am using to write this app:
 
 * Twitter Bootstrap
-    * I use a custom theme that I designed
+    * I use a custom theme from Bootswatch
+
 * RactiveJS
     * Front end JS
     * 2 way data-binding
-* NodeJS (Express)
-* HTML5 LocalStorage
