@@ -21,6 +21,7 @@ I used the base Apache container from https://hub.docker.com/r/appcontainers/apa
 View the Container on the docker hub here: https://hub.docker.com/r/dsikes/todo/
 
 If you run docker and would like to see the container run, simply do this:
+
     docker run -it -d --name todo -p 80:80 dsikes/todo
 
 Depending on your setup, you should be able to navigate to localhost
